@@ -1,0 +1,31 @@
+Mon Oct 14 15:58:01 NZDT 2024 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Mon Oct 14 16:01:49 NZDT 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0192-88f6-13f0-ffffab735e7d 
+on database directory C:\Users\franc\OneDrive - AUT University\Software Construction\LanguageLearner\Phrases&Facts with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@30946e09 
+Loaded from file:/C:/Users/franc/OneDrive%20-%20AUT%20University/Software%20Construction/LanguageLearner/lib/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=11.0.23+7-LTS-222
+user.dir=C:\Users\franc\OneDrive - AUT University\Software Construction\LanguageLearner\lib\db-derby-10.14.2.0-bin
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\franc\OneDrive - AUT University\Software Construction\LanguageLearner
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Oct 14 16:01:50 NZDT 2024:
+Shutting down instance a816c00e-0192-88f6-13f0-ffffab735e7d on database directory C:\Users\franc\OneDrive - AUT University\Software Construction\LanguageLearner\Phrases&Facts with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@30946e09 
+Mon Oct 14 16:01:50 NZDT 2024 Thread[DRDAConnThread_3,5,main] (DATABASE = Phrases&Facts), (DRDAID = {2}), Database 'Phrases&Facts' shutdown.
+----------------------------------------------------------------
+Mon Oct 14 17:08:13 NZDT 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 6ede40af-0192-88f6-13f0-ffffab735e7d 
+on database directory C:\Users\franc\OneDrive - AUT University\Software Construction\LanguageLearner\Phrases&Facts with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@30946e09 
+Loaded from file:/C:/Users/franc/OneDrive%20-%20AUT%20University/Software%20Construction/LanguageLearner/lib/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=11.0.23+7-LTS-222
+user.dir=C:\Users\franc\OneDrive - AUT University\Software Construction\LanguageLearner\lib\db-derby-10.14.2.0-bin
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\franc\OneDrive - AUT University\Software Construction\LanguageLearner
+Database Class Loader started - derby.database.classpath=''
