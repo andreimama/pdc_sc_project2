@@ -14,10 +14,13 @@ import java.io.IOException;
  *
  * @author franc
  */
+
+//The purpose of this class is to extract a collection of phrases/Fun-facts from text files to then insert them the databse if they aren't already in the DB
+//This allows future expansion for other languages.
+//This class will be deleted and used in future updates after database has been initialized.
 public class DBInitializer {
 
     DBManager dbManager = new DBManager();
-    
 
     private boolean tableExists(String table) {
         boolean exists = false;
@@ -31,97 +34,66 @@ public class DBInitializer {
         return exists;
     }
 
-    public void createTables() {
-        String createAfrikaansTable = "CREATE TABLE AfrikaansPhrases ("
+    public void createTable(String tableName) {
+        String createTable = "CREATE TABLE " + tableName + " ("
                 + "ID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, "
-                + "AfrikaansPhrase VARCHAR(255), "
+                + "phrase VARCHAR(255), "
                 + "EnglishTranslation VARCHAR(255))";
-
-        String createTagalogTable = "CREATE TABLE TagalogPhrases ("
-                + "ID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, "
-                + "TagalogPhrase VARCHAR(255), "
-                + "EnglishTranslation VARCHAR(255))";
-
-        String createFunFactsTable = "CREATE TABLE FunFacts ("
-                + "ID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, "
-                + "SouthAfricanFunFact VARCHAR(500), "
-                + "PhilippinesFunFact VARCHAR(500))";
 
         try {
-            if (!tableExists("AfrikaansPhrases")) {
-                dbManager.updateDB(createAfrikaansTable);
-            }
-            if (!tableExists("TagalogPhrases")) {
-                dbManager.updateDB(createTagalogTable);
-            }
-            if (!tableExists("FunFacts")) {
-                dbManager.updateDB(createFunFactsTable);
+            if (!tableExists(tableName)) {
+                dbManager.updateDB(createTable);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public void addAfrPhrase(String afrPhrase, String engTranslation){
-        String insertQuery = "INSERT INTO AfrikaansPhrases (AfrikaansPhrase, EnglishTranslation) "
-                + "VALUES ('" + afrPhrase + "', '" + engTranslation + "')";
-        dbManager.updateDB(insertQuery);
-    }
-    public void addTagPhrase(String tagPhrase, String engTranslation){
-        String insertQuery = "INSERT INTO AfrikaansPhrases (AfrikaansPhrase, EnglishTranslation) "
-                + "VALUES ('" + tagPhrase + "', '" + engTranslation + "')";
-        dbManager.updateDB(insertQuery);
-    }
-    
-    private boolean phraseExistsAfr(String afrPhrase){
+    private boolean phraseExists(String phrase, String tableName) {
         boolean exists = false;
-        String checkQuery = "SELECT 1 FROM AfrikaansPhrases WHERE AfrikaansPhrase = '" + afrPhrase + "'";
-        try{
+        String checkQuery = "SELECT 1 FROM " + tableName + " WHERE phrase = '" + phrase + "'";
+        try {
             ResultSet rs = dbManager.getFromDB(checkQuery);
             exists = rs.next();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return exists;
     }
-    private boolean phraseExistsTag(String tagPhrase){
-        boolean exists = false;
-        String checkQuery = "SELECT 1 FROM TagalogPhrases WHERE TagalogPhrase = '" + tagPhrase + "'";
-        try{
-            ResultSet rs = dbManager.getFromDB(checkQuery);
-            exists = rs.next();
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return exists;
+
+    private void addPhrase(String phrase, String engTranslation, String tableName) {
+        String insertQuery = "INSERT INTO " + tableName + " (phrase, EnglishTranslation) "
+                + "VALUES ('" + phrase + "', '" + engTranslation + "')";
+        dbManager.updateDB(insertQuery);
     }
-    public void readAndInsertPhrases(String path1,String path2){
-        try(BufferedReader reader1 = new BufferedReader(new FileReader(path1))){
-            String afrPhrase;
-            while((afrPhrase = reader1.readLine()) != null){
-                String engTranslation = reader1.readLine();
-                
-                if(engTranslation != null){
-                    if(!phraseExistsAfr(afrPhrase)){
-                        addAfrPhrase(afrPhrase, engTranslation);
+    private void addFact(String fact, String columnName){
+        String insertQuery = "INSERT INTO FUNFACTS (" + columnName + ") "
+                + "VALUES ('" + fact + "')";
+        dbManager.updateDB(insertQuery);
+    }
+
+    public void readAndInsertPhrases(String path, String tableName) {
+        try ( BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String phrase;
+            while ((phrase = reader.readLine()) != null) {
+                String engTranslation = reader.readLine();
+
+                if (engTranslation != null) {
+                    if (!phraseExists(phrase, tableName)) {
+                        addPhrase(phrase, engTranslation, tableName);
                     }
                 }
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        try(BufferedReader reader2 = new BufferedReader(new FileReader(path2))){
-            String tagPhrase;
-            while((tagPhrase = reader2.readLine()) != null){
-                String engTranslation = reader2.readLine();
-                
-                if(engTranslation != null){
-                    if(!phraseExistsTag(tagPhrase)){
-                        addAfrPhrase(tagPhrase, engTranslation);
-                    }
-                }
+    }
+    public void readAndInsertFacts(String path, String column){
+        try ( BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String fact;
+            while ((fact = reader.readLine()) != null){
+                addFact(fact, column);
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }

@@ -10,8 +10,10 @@ package languagelearner;
  */
 public class LanguageLearner {
     
-    private static final String path1 = "PhrasesAfr.txt";
-    private static final String path2 = "PhrasesTag.txt";
+    private static final String pathAfr = "PhrasesAfr.txt";
+    private static final String pathTag = "PhrasesTag.txt";
+    private static final String funFactsAfr = "FunFactsAfr.txt";
+    private static final String funFactsTag = "FunFactsPhil";
     /**
      * @param args the command line arguments
      */
@@ -19,8 +21,12 @@ public class LanguageLearner {
         // TODO code application logic here
         DBManager dbManager = new DBManager();// To be used later
         DBInitializer DBInit = new DBInitializer();
-        DBInit.createTables();
-        DBInit.readAndInsertPhrases(path1, path2);
+        DBInit.createTable("AfrikaansPhrases");
+        DBInit.createTable("TagalogPhrases");
+        DBInit.createTable("FunFacts");
+        DBInit.readAndInsertPhrases(pathAfr, "AfrikaansPhrases");
+        DBInit.readAndInsertPhrases(pathTag, "TagalogPhrases");
+        DBInit.readAndInsertFacts(funFactsAfr, "SOUTHAFRICANFUNFACT");
     }
 
 }
