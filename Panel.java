@@ -12,10 +12,14 @@ import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.util.Iterator;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 //import javax.swing.JTextField;
 
 
@@ -28,7 +32,8 @@ import javax.swing.JPanel;
 public class Panel extends JFrame implements ActionListener {
     public JButton button, button2, button3, button4, quitButton;
    // public JTextField text;
-    public JLabel staticTextLabel;
+    //Dynamic Text label will be label for fun facts that changes from db
+    public JLabel staticTextLabel, dynamicTextLabel;
 
     public Panel() {
         initComponents();
@@ -43,35 +48,71 @@ public class Panel extends JFrame implements ActionListener {
         this.button4 = createButton("button4");
         this.quitButton = createButton("Quit");
         this.staticTextLabel = new JLabel("Fun Facts!");
+        this.dynamicTextLabel = new JLabel("this is a test fact! philippines is where i am from! :3");
         
         
     }
     
     public void initPanels() {
         
+        //1 2 being i row 2 columns
+        //JPanel mainPanel = new JPanel(new GridLayout(1,2));
+        
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        
+        
         JPanel northPanel = new JPanel();
-        this.add(northPanel, BorderLayout.NORTH);
         northPanel.add(this.quitButton);
+        leftPanel.add(northPanel, BorderLayout.NORTH);
+        
         
         JPanel centerPanel = new JPanel();
         //centerPanel.add(this.button2);
-        this.add(centerPanel, BorderLayout.CENTER);
+        leftPanel.add(centerPanel, BorderLayout.CENTER);
         
-        JPanel eastPanel = new JPanel();
-        this.add(eastPanel, BorderLayout.EAST);
-        eastPanel.add(this.staticTextLabel);
+        //JPanel eastPanel = new JPanel();
+        
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.add(this.staticTextLabel);
+        rightPanel.add(this.dynamicTextLabel);
+        
+
+//this.add(eastPanel, BorderLayout.EAST);
+        //eastPanel.add(this.staticTextLabel);
+        //eastPanel.add(this.dynamicTextLabel);
         
         
-        JPanel southPanel = new JPanel(new GridLayout(2,2));
+        /*JPanel southPanel = new JPanel(new GridLayout(2,2));
         southPanel.add(this.button3);
         southPanel.add(this.button4);
         southPanel.add(this.button2);
         southPanel.add(this.button);
         
         this.add(southPanel, BorderLayout.SOUTH);
+        */
+   JPanel southPanel = new JPanel();
+    southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+    southPanel.add(Box.createVerticalStrut(10)); // Top margin
+
+    JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2x2 grid with 10px gaps
+    buttonPanel.add(this.button3);
+    buttonPanel.add(this.button4);
+    buttonPanel.add(this.button2);
+    buttonPanel.add(this.button);
+    southPanel.add(buttonPanel);
+    southPanel.add(Box.createVerticalStrut(10)); // Bottom margin
+
+    leftPanel.add(southPanel, BorderLayout.SOUTH);
+    
+    
+    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
+    splitPane.setResizeWeight(0.9); // 75% to the left, 25% to the right
+    splitPane.setEnabled(false);//will disable moving margin
+    
+    this.add(splitPane);
+    
         
-        
-        this.setSize(400,400);
+        this.setSize(800,400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
     }
