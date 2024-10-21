@@ -9,11 +9,12 @@ package languagelearner;
  * @author franc
  */
 public class LanguageLearner {
-    
+
     private static final String pathAfr = "PhrasesAfr.txt";
     private static final String pathTag = "PhrasesTag.txt";
     private static final String funFactsAfr = "FunFactsAfr.txt";
-    private static final String funFactsTag = "FunFactsPhil";
+    private static final String funFactsTag = "FunFactsPhil.txt";
+
     /**
      * @param args the command line arguments
      */
@@ -24,9 +25,14 @@ public class LanguageLearner {
         DBInit.createTable("AfrikaansPhrases");
         DBInit.createTable("TagalogPhrases");
         DBInit.createTable("FunFacts");
+        DBInit.clearPhrases("AFRIKAANSPHRASES");
+        DBInit.clearPhrases("TAGALOGPHRASES");
         DBInit.readAndInsertPhrases(pathAfr, "AfrikaansPhrases");
         DBInit.readAndInsertPhrases(pathTag, "TagalogPhrases");
-        DBInit.readAndInsertFacts(funFactsAfr, "SOUTHAFRICANFUNFACT");
+        DBInit.readAndInsertFacts(funFactsAfr, funFactsTag);
+
+        Panel f = new Panel();
+        f.setVisible(true);
     }
 
 }
