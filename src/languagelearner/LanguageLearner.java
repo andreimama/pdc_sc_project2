@@ -22,6 +22,8 @@ public class LanguageLearner {
         // TODO code application logic here
         DBManager dbManager = new DBManager();// To be used later
         DBInitializer DBInit = new DBInitializer();
+        Randomizer rand = new Randomizer();
+        
         DBInit.createTable("AfrikaansPhrases");
         DBInit.createTable("TagalogPhrases");
         DBInit.createTable("FunFacts");
@@ -33,6 +35,13 @@ public class LanguageLearner {
 
         Panel f = new Panel();
         f.setVisible(true);
+        // Testing
+        System.out.println(rand.randomPhrase("afrPhrase"));
+        System.out.println(rand.randomPhrase("afrTrans"));
+        System.out.println(rand.randomPhrase("tagPhrase"));
+        System.out.println(rand.randomPhrase("tagTrans"));
+        System.out.println(rand.randomPhrase("afrFact"));
+        System.out.println(rand.randomPhrase("tagFact"));
     }
 
 }
