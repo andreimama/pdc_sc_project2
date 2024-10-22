@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
     
     
     public MainFrame() {
-        setSize(800,400);
+        setSize(600,400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
@@ -29,6 +29,8 @@ public class MainFrame extends JFrame {
         
         mainPanel.add(new MenuPanel(this), "Menu Panel");
         mainPanel.add(new EasyPanel(this), "Easy Panel");
+        mainPanel.add(new LearnPanel(this), "Learn Panel");
+        
         add(mainPanel,BorderLayout.CENTER);
         setVisible(true);
         
