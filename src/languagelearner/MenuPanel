@@ -4,8 +4,15 @@
  */
 package com.mycompany.pdc_sc_project2;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
@@ -16,9 +23,44 @@ public class MenuPanel extends BaseGUI {
     
     public MenuPanel(MainFrame mainFrame) {
         super(mainFrame);
-        add(new JTextField(20));
-        add(createNavButton("Go to Easy panel", "EasyPanel"));
-        add(createNavButton("GUI2", "MenuPanel"));
+       // add(new JTextField(20));
+       // add(createNavButton("Go to Easy panel", "EasyPanel"));
+       // add(createNavButton("GUI2", "MenuPanel"));
+    }
+    
+     @Override 
+    protected JPanel createContentPanel() {
+    JPanel panel = new JPanel(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    
+    
+    //chatgpt was used here, just to position the button and label in the right place.
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(10, 0, 10, 0); // Adds space between components
+
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.weighty = -2; // Push everything down
+    panel.add(Box.createVerticalGlue(), gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.weighty = 0; // Reset weighty
+    panel.add(createLabel("Welcome 2 Lang"), gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    panel.add(createButton("Afrikaans"), gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy = 3;
+    panel.add(createButton("Tagalog"), gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy = 4;
+    gbc.weighty = 1.0; 
+        
+        return panel;
     }
     
     @Override
