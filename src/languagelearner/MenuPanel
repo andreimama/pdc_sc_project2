@@ -1,0 +1,28 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.pdc_sc_project2;
+
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+/**
+ *
+ * @author mamar
+ */
+public class MenuPanel extends BaseGUI {
+    
+    public MenuPanel(MainFrame mainFrame) {
+        super(mainFrame);
+        add(new JTextField(20));
+        add(createNavButton("Go to Easy panel", "EasyPanel"));
+        add(createNavButton("GUI2", "MenuPanel"));
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Button clicked, "+ ((JButton)e.getSource()).getText());
+    }
+}
