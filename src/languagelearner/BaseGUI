@@ -1,0 +1,53 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.pdc_sc_project2;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+/**
+ *
+ * @author mamar
+ */
+public abstract class BaseGUI extends JPanel implements ActionListener {
+    private MainFrame mainFrame;
+
+    public BaseGUI(MainFrame mainFrame) {
+        
+        this.mainFrame = mainFrame;
+        setLayout(new FlowLayout());
+        
+        JPanel navPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+        add(createNavButton("Button 1 to menu", "Menu Panel"));
+        add(createNavButton("Button 2 to easy", "Easy Panel"));
+        
+        navPanel.setPreferredSize(new Dimension((int) (400), (int) (400*0.25)));
+        
+        add(navPanel, BorderLayout.WEST);
+    }
+
+    protected JButton createButton(String text) {
+        JButton button = new JButton(text);
+        button.addActionListener(this);//Acion listener
+        return button;
+    }
+
+    protected JButton createNavButton(String text, String card) {
+        JButton button = new JButton(text);
+        button.addActionListener(e -> mainFrame.switchTo(card)); // Switch to specified card
+        return button;
+    }
+
+    @Override
+    public abstract void actionPerformed(ActionEvent e);
+    
+
+}
