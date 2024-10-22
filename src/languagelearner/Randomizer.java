@@ -54,6 +54,9 @@ public class Randomizer {
         try ( ResultSet rs = dbManager.getFromDB(query)) {
             if (rs.next()) {
                 phrase = rs.getString(columnName);
+                if (phrase.equals("N/A")) {
+                    return randomPhrase(tableName, columnName);
+                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -72,10 +75,10 @@ public class Randomizer {
             case "tagTrans":
                 return randomPhrase("TAGALOGPHRASES", "ENGLISHTRANSLATION");
             case "afrFact":
-                return randomPhrase("FUNFACTS","SOUTHAFRICANFUNFACT");
+                return randomPhrase("FUNFACTS", "SOUTHAFRICANFUNFACT");
             case "tagFact":
-                return randomPhrase("FUNFACTS","PHILIPPINESFUNFACT");
-            default :
+                return randomPhrase("FUNFACTS", "PHILIPPINESFUNFACT");
+            default:
                 return "Error finding a phrase";
         }
     }

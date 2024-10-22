@@ -23,19 +23,16 @@ public class LanguageLearner {
         DBManager dbManager = new DBManager();// To be used later
         DBInitializer DBInit = new DBInitializer();
         Randomizer rand = new Randomizer();
-        
-        DBInit.createTable("AfrikaansPhrases");
-        DBInit.createTable("TagalogPhrases");
-        DBInit.createTable("FunFacts");
+        Admin admin = new Admin();
+
         DBInit.clearPhrases("AFRIKAANSPHRASES");
         DBInit.clearPhrases("TAGALOGPHRASES");
-        DBInit.readAndInsertPhrases(pathAfr, "AfrikaansPhrases");
-        DBInit.readAndInsertPhrases(pathTag, "TagalogPhrases");
-        DBInit.readAndInsertFacts(funFactsAfr, funFactsTag);
+        DBInit.processPhrases(pathAfr, "AfrikaansPhrases");
+        DBInit.processPhrases(pathTag, "TagalogPhrases");
+        DBInit.processFacts(funFactsAfr, funFactsTag);
 
-        Panel f = new Panel();
-        f.setVisible(true);
         // Testing
+        admin.setVisible(true);
         System.out.println(rand.randomPhrase("afrPhrase"));
         System.out.println(rand.randomPhrase("afrTrans"));
         System.out.println(rand.randomPhrase("tagPhrase"));
@@ -43,5 +40,4 @@ public class LanguageLearner {
         System.out.println(rand.randomPhrase("afrFact"));
         System.out.println(rand.randomPhrase("tagFact"));
     }
-
 }

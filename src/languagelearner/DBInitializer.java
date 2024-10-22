@@ -6,10 +6,8 @@ package languagelearner;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,33 +19,7 @@ import java.util.ArrayList;
 public class DBInitializer {
 
     DBManager dbManager = new DBManager();
-
-    private boolean tableExists(String table) {
-        boolean exists = false;
-        try {
-            String checkQuery = "SELECT 1 FROM SYS.SYSTABLES WHERE TABLENAME = '" + table.toUpperCase() + "'";
-            ResultSet rs = dbManager.getFromDB(checkQuery);
-            exists = rs.next();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return exists;
-    }
-
-    public void createTable(String tableName) {
-        String createTable = "CREATE TABLE " + tableName + " ("
-                + "ID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, "
-                + "phrase VARCHAR(255), "
-                + "EnglishTranslation VARCHAR(255))";
-
-        try {
-            if (!tableExists(tableName)) {
-                dbManager.updateDB(createTable);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    FileIO file = new FileIO();
 
     private boolean phraseExists(String phrase, String tableName) {
         boolean exists = false;
@@ -80,10 +52,6 @@ public class DBInitializer {
     }
 
     private void addFact(String fact1, String fact2) {
-
-        String fact1Value = (fact1 != null && !fact1.isEmpty()) ? "'" + fact1 + "'" : "NULL";
-        String fact2Value = (fact2 != null && !fact2.isEmpty()) ? "'" + fact2 + "'" : "NULL";
-
         if (!factExists(fact1, "SOUTHAFRICANFUNFACT") && !factExists(fact2, "PHILIPPINESFUNFACT")) {
             String insertQuery = "INSERT INTO FUNFACTS (SOUTHAFRICANFUNFACT, PHILIPPINESFUNFACT) "
                     + "VALUES ('" + fact1 + "', '" + fact2 + "')";
@@ -91,21 +59,20 @@ public class DBInitializer {
         }
     }
 
-    public void readAndInsertPhrases(String path, String tableName) {
-        try ( BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String phrase;
-            while ((phrase = reader.readLine()) != null) {
-                String engTranslation = reader.readLine();
+    private void writePhrasesToDB(List<String[]> phrases, String tableName) {
+        for (String[] pair : phrases) {
+            String phrase = pair[0];
+            String engTranslation = pair[1];
 
-                if (engTranslation != null) {
-                    if (!phraseExists(phrase, tableName)) {
-                        addPhrase(phrase, engTranslation, tableName);
-                    }
-                }
+            if (!phraseExists(phrase, tableName)) {
+                addPhrase(phrase, engTranslation, tableName);
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
+    }
+
+    public void processPhrases(String path, String tableName) {
+        List<String[]> phrases = file.readPhrases(path);
+        writePhrasesToDB(phrases, tableName);
     }
 
     public void clearFunFacts() {
@@ -116,35 +83,21 @@ public class DBInitializer {
         dbManager.updateDB("TRUNCATE TABLE " + tableName);
     }
 
-    public void readAndInsertFacts(String pathAfr, String pathPhil) {
-
+    private void writeFactsToDB(ArrayList<String> afrFacts, ArrayList<String> tagFacts) {
         clearFunFacts();
-        ArrayList<String> afrikaansFacts = new ArrayList<>();
-        ArrayList<String> filipinoFacts = new ArrayList<>();
 
-        try ( BufferedReader readerAfr = new BufferedReader(new FileReader(pathAfr))) {
-            String fact;
-            while ((fact = readerAfr.readLine()) != null) {
-                afrikaansFacts.add(fact);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading Afrikaans facts: " + e.getMessage());
-        }
+        int maxSize = Math.max(afrFacts.size(), tagFacts.size());
 
-        try ( BufferedReader readerPhil = new BufferedReader(new FileReader(pathPhil))) {
-            String fact;
-            while ((fact = readerPhil.readLine()) != null) {
-                filipinoFacts.add(fact);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading Filipino facts: " + e.getMessage());
-        }
-        int minSize = Math.min(afrikaansFacts.size(), filipinoFacts.size());
-        for (int i = 0; i < minSize; i++) {
-            String afrFact = afrikaansFacts.get(i);
-            String philFact = filipinoFacts.get(i);
-            addFact(afrFact, philFact);
+        for (int i = 0; i < maxSize; i++) {
+            String afrFact = i < afrFacts.size() ? afrFacts.get(i) : "N/A";
+            String tagFact = i < tagFacts.size() ? tagFacts.get(i) : "N/A";
+            addFact(afrFact, tagFact);
         }
     }
 
+    public void processFacts(String afrPath, String tagPath) {
+        ArrayList<String> afrFacts = file.readLine(afrPath);
+        ArrayList<String> tagFacts = file.readLine(tagPath);
+        writeFactsToDB(afrFacts, tagFacts);
+    }
 }
