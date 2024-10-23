@@ -1,0 +1,66 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.pdc_sc_project2;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+/**
+ *
+ * @author mamar
+ */
+
+public class EasyPanel extends BaseGUI {
+    
+    public EasyPanel(MainFrame mainFrame) {
+        super(mainFrame);
+ 
+    }
+    
+    @Override 
+    protected JPanel createContentPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        
+        
+        
+        JPanel northPanel = new JPanel();
+        JLabel northLabel = new JLabel("will say if afrikaans or tagalog");
+        northPanel.add(northLabel, BorderLayout.NORTH);
+         
+        JPanel centerPanel = new JPanel();
+        JLabel centerLabel = new JLabel("phrase");
+        centerPanel.add(centerLabel, BorderLayout.CENTER);
+                
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+        
+            //4 button panel that will be in south panel
+            JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+            buttonPanel.add(createButton("a1"));
+            buttonPanel.add(createButton("a2"));
+            buttonPanel.add(createButton("a3"));
+            buttonPanel.add(createButton("a4"));
+            
+        southPanel.add(buttonPanel);
+        
+       // JLabel.setPreferredSize(new Dimension(200,30));
+       
+        panel.add(northPanel, BorderLayout.NORTH);
+        panel.add(centerPanel, BorderLayout.CENTER);
+        panel.add(southPanel, BorderLayout.SOUTH);
+        return panel;
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Button clicked, "+ ((JButton)e.getSource()).getText());
+    }
+}
