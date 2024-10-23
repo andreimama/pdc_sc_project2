@@ -4,6 +4,7 @@
  */
 package com.mycompany.pdc_sc_project2;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -12,7 +13,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 /**
@@ -34,13 +38,13 @@ public class MenuPanel extends BaseGUI {
     GridBagConstraints gbc = new GridBagConstraints();
     
     
-    //chatgpt was used here, just to position the button and label in the right place.
+    //chatgpt was used here, just to position the comboxbox in the right place.
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.insets = new Insets(10, 0, 10, 0); // Adds space between components
 
     gbc.gridx = 0;
     gbc.gridy = 0;
-    gbc.weighty = -2; // Push everything down
+    gbc.weighty = -4; // Push everything down
     panel.add(Box.createVerticalGlue(), gbc);
 
     gbc.gridx = 0;
@@ -50,19 +54,50 @@ public class MenuPanel extends BaseGUI {
 
     gbc.gridx = 0;
     gbc.gridy = 2;
-    panel.add(createButton("Afrikaans"), gbc);
+    String[] languages = {"Afrikaans", "Tagalog"};
+    JComboBox<String> comboBox = createComboBox(languages);
+    panel.add(comboBox, gbc);
 
     gbc.gridx = 0;
     gbc.gridy = 3;
-    panel.add(createButton("Tagalog"), gbc);
-
+    panel.add(quitButton("Quit Button"), gbc);
+    
     gbc.gridx = 0;
     gbc.gridy = 4;
-    gbc.weighty = 1.0; 
+    gbc.weighty = 1.0; // Increase weight to push everything above downward more effectively
+    panel.add(Box.createVerticalGlue(), gbc);
         
         return panel;
     }
     
+    @Override
+    protected JPanel createNavPanel() {
+        JPanel navPanel = new JPanel();
+        navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
+        navPanel.add(Box.createVerticalStrut(30));
+        
+        navPanel.add(createNavButton("Button 2 to Easy Test", "Easy Panel"));
+        navPanel.add(Box.createVerticalStrut(15));
+        navPanel.add(createNavButton("Button 3 to learn phrases", "Learn Panel"));
+        navPanel.add(Box.createVerticalStrut(15));
+
+        
+        
+        navPanel.add(Box.createVerticalStrut(15));
+        
+        JLabel counterLabel = createLabel("Score: 0");
+        counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        navPanel.add(counterLabel);
+        //counter for score
+        
+        
+        JScrollPane funFact = createTextArea("Fun Fact: ");
+        funFact.setAlignmentX(Component.CENTER_ALIGNMENT);
+        navPanel.add(funFact);
+        //fun fact will be here, a bit unsure to connect datababse and randomier for this.
+        return navPanel;
+
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println("Button clicked, "+ ((JButton)e.getSource()).getText());
