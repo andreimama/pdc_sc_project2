@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -43,36 +44,10 @@ public abstract class BaseGUI extends JPanel implements ActionListener {
         add(splitPane, BorderLayout.CENTER);
     }
     
-    private JPanel createNavPanel() {
-        JPanel navPanel = new JPanel();
-        navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
-        navPanel.add(Box.createVerticalStrut(30));
-        navPanel.add(createNavButton("Button 1 to menu", "Menu Panel"));
-        navPanel.add(Box.createVerticalStrut(15));
-        navPanel.add(createNavButton("Button 2 to Easy Test", "Easy Panel"));
-        navPanel.add(Box.createVerticalStrut(15));
-        navPanel.add(createNavButton("Button 3 to learn phrases", "Learn Panel"));
-        navPanel.add(Box.createVerticalStrut(15));
-
-        navPanel.add(quitButton("Quit Button"));
-        
-        navPanel.add(Box.createVerticalStrut(15));
-        
-        JLabel counterLabel = createLabel("Score: 0");
-        counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        navPanel.add(counterLabel);
-        //counter for score
-        
-        
-        JScrollPane funFact = createTextArea("Fun Fact: ");
-        funFact.setAlignmentX(Component.CENTER_ALIGNMENT);
-        navPanel.add(funFact);
-        //fun fact will be here, a bit unsure to connect datababse and randomier for this.
-        return navPanel;
-
-    }
+    protected abstract JPanel createNavPanel();
         
     protected abstract JPanel createContentPanel();
+    
     //should these be private instead?
     protected JButton createButton(String text) {
         JButton button = new JButton(text);
@@ -81,14 +56,15 @@ public abstract class BaseGUI extends JPanel implements ActionListener {
         return button;
     }
     
-    private JButton quitButton(String text) {
+    protected JButton quitButton(String text) {
         JButton button = new JButton(text);
         button.addActionListener(e->System.exit(0));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         return button;
     }
-
-    private JPanel createNavButton(String text, String card) {
+    
+    
+    protected JPanel createNavButton(String text, String card) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(30,30));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -118,6 +94,13 @@ public abstract class BaseGUI extends JPanel implements ActionListener {
     JScrollPane scrollPane = new JScrollPane(textArea);
     scrollPane.setPreferredSize(new Dimension(250, 250)); //adjust size as needed
     return scrollPane;
+}
+   
+   protected JComboBox<String> createComboBox(String[] items) {
+    JComboBox<String> comboBox = new JComboBox<>(items);
+    comboBox.setPreferredSize(new Dimension(150, 30)); // Adjust size as needed
+    comboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+    return comboBox;
 }
 
 
