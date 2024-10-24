@@ -7,10 +7,6 @@ package com.mycompany.pdc_sc_project2;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -23,7 +19,7 @@ import javax.swing.JTextArea;
  *
  * @author mamar
  */
-public abstract class BaseGUI extends JPanel implements ActionListener {
+public abstract class BaseGUI extends JPanel {
     private MainFrame mainFrame;
 
     public BaseGUI(MainFrame mainFrame) {
@@ -44,15 +40,25 @@ public abstract class BaseGUI extends JPanel implements ActionListener {
         add(splitPane, BorderLayout.CENTER);
     }
     
+    public MainFrame getMainFrame() {
+        return mainFrame;
+    }
+    
     protected abstract JPanel createNavPanel();
-        
-    protected abstract JPanel createContentPanel();
+       
+
+    // Default createContentPanel method, can be overridden
+    protected JPanel createContentPanel() {
+        return createContentPanel(true); // Default to true or appropriate default value
+    }
+
+    // Overloaded method with boolean parameter
+    protected abstract JPanel createContentPanel(boolean lang);
     
     //should these be private instead?
     protected JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(30,30));
-        button.addActionListener(this);//Acion listener
         return button;
     }
     
@@ -64,21 +70,14 @@ public abstract class BaseGUI extends JPanel implements ActionListener {
     }
     
     
-    protected JPanel createNavButton(String text, String card) {
+    protected JButton createNavButton(String text, String card) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(30,30));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener(e -> mainFrame.switchTo(card)); // Switch to specified card
+        button.setActionCommand(card);
         
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         
-        buttonPanel.add(button);
-        
-        buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center align panel
-
-    return buttonPanel;
-        
+        return button;
     }
     
     protected JLabel createLabel(String text) {
@@ -92,7 +91,7 @@ public abstract class BaseGUI extends JPanel implements ActionListener {
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);
     JScrollPane scrollPane = new JScrollPane(textArea);
-    scrollPane.setPreferredSize(new Dimension(250, 250)); //adjust size as needed
+    scrollPane.setPreferredSize(new Dimension(250, 310)); //adjust size as needed
     return scrollPane;
 }
    
@@ -102,10 +101,7 @@ public abstract class BaseGUI extends JPanel implements ActionListener {
     comboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
     return comboBox;
 }
+   
 
-
-    @Override
-    public abstract void actionPerformed(ActionEvent e);
-    
 
 }
