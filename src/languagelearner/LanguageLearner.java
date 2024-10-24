@@ -15,6 +15,7 @@ public class LanguageLearner {
     private static final String funFactsAfr = "FunFactsAfr.txt";
     private static final String funFactsTag = "FunFactsPhil.txt";
 
+    //constructor
     /**
      * @param args the command line arguments
      */
@@ -23,7 +24,8 @@ public class LanguageLearner {
         DBManager dbManager = new DBManager();// To be used later
         DBInitializer DBInit = new DBInitializer();
         Randomizer rand = new Randomizer();
-        Admin admin = new Admin();
+        //MenuPanel menu = new MenuPanel();
+        MainFrame main = new MainFrame();
 
         DBInit.clearPhrases("AFRIKAANSPHRASES");
         DBInit.clearPhrases("TAGALOGPHRASES");
@@ -32,12 +34,12 @@ public class LanguageLearner {
         DBInit.processFacts(funFactsAfr, funFactsTag);
 
         // Testing
-        admin.setVisible(true);
-        System.out.println(rand.randomPhrase("afrPhrase"));
-        System.out.println(rand.randomPhrase("afrTrans"));
-        System.out.println(rand.randomPhrase("tagPhrase"));
-        System.out.println(rand.randomPhrase("tagTrans"));
-        System.out.println(rand.randomPhrase("afrFact"));
-        System.out.println(rand.randomPhrase("tagFact"));
+        //admin.setVisible(true);///////////////////////////////////////////keep/////////////////////////////////////////////////
+//        System.out.println(rand.randomPhrase("afrPhrase"));
+//        System.out.println(rand.randomPhrase("afrTrans"));
+//        System.out.println(rand.randomPhrase("tagPhrase"));
+//        System.out.println(rand.randomPhrase("tagTrans"));
+//        System.out.println(rand.randomPhrase("afrFact"));
+//        System.out.println(rand.randomPhrase("tagFact"));
     }
 }

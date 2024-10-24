@@ -94,7 +94,6 @@ public class DBInitializer {
             addFact(afrFact, tagFact);
         }
     }
-
     public void processFacts(String afrPath, String tagPath) {
         ArrayList<String> afrFacts = file.readLine(afrPath);
         ArrayList<String> tagFacts = file.readLine(tagPath);
