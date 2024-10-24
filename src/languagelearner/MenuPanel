@@ -1,15 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.pdc_sc_project2;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,13 +13,16 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+
 
 /**
  *
  * @author mamar
  */
-public class MenuPanel extends BaseGUI {
+public class MenuPanel extends BaseGUI implements PanelListener{
+    private JButton easyPanelButton;
+    private JButton learnPanelButton;
+    private JComboBox<String> comboBox;
     
     public MenuPanel(MainFrame mainFrame) {
         super(mainFrame);
@@ -33,7 +32,7 @@ public class MenuPanel extends BaseGUI {
     }
     
      @Override 
-    protected JPanel createContentPanel() {
+    protected JPanel createContentPanel(boolean lang) {
     JPanel panel = new JPanel(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
     
@@ -55,7 +54,7 @@ public class MenuPanel extends BaseGUI {
     gbc.gridx = 0;
     gbc.gridy = 2;
     String[] languages = {"Afrikaans", "Tagalog"};
-    JComboBox<String> comboBox = createComboBox(languages);
+    comboBox = createComboBox(languages);
     panel.add(comboBox, gbc);
 
     gbc.gridx = 0;
@@ -76,30 +75,44 @@ public class MenuPanel extends BaseGUI {
         navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
         navPanel.add(Box.createVerticalStrut(30));
         
-        navPanel.add(createNavButton("Button 2 to Easy Test", "Easy Panel"));
-        navPanel.add(Box.createVerticalStrut(15));
-        navPanel.add(createNavButton("Button 3 to learn phrases", "Learn Panel"));
+
+        easyPanelButton = createNavButton("Button 2 to Easy Test", "Easy Panel");
+        navPanel.add(easyPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
 
-        
-        
+        learnPanelButton = createNavButton("Button 3 to learn phrases", "Learn Panel");
+        navPanel.add(learnPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
-        
+
         JLabel counterLabel = createLabel("Score: 0");
         counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(counterLabel);
-        //counter for score
-        
-        
+
         JScrollPane funFact = createTextArea("Fun Fact: ");
         funFact.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(funFact);
-        //fun fact will be here, a bit unsure to connect datababse and randomier for this.
+
         return navPanel;
+    }
+    
+   @Override
+   public void onUpdated(Data data) {
+       if (data.lang) {
+        comboBox.setSelectedItem("Afrikaans");
+           System.out.println("afirkaans update");
+    } else {
+        comboBox.setSelectedItem("Tagalog");
+           System.out.println("tagalog update");
+       }
+   }
+
+
+    public void addActionListener(ActionListener listener) {
+        easyPanelButton.addActionListener(listener);
+        learnPanelButton.addActionListener(listener);
+        comboBox.addActionListener(listener);
 
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("Button clicked, "+ ((JButton)e.getSource()).getText());
-    }
+
+    
 }
