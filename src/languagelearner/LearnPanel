@@ -1,14 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.pdc_sc_project2;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,19 +15,21 @@ import javax.swing.JScrollPane;
  *
  * @author mamar
  */
-public class LearnPanel extends BaseGUI {
-    
+public class LearnPanel extends BaseGUI implements PanelListener{
+    private JButton easyPanelButton;
+    private JButton menuPanelButton;
+    private JLabel northLabel;
     public LearnPanel(MainFrame mainFrame) {
         super(mainFrame);
  
     }
 
     @Override
-    protected JPanel createContentPanel() {
+    protected JPanel createContentPanel(boolean lang) {
          JPanel panel = new JPanel(new BorderLayout());
         
         JPanel northPanel = new JPanel();
-        JLabel northLabel = new JLabel("will say if afrikaans or tagalog");
+        northLabel = createLabel("Afrikaans");
         northPanel.add(northLabel, BorderLayout.NORTH);
          
         JPanel centerPanel = new JPanel();
@@ -46,20 +46,24 @@ public class LearnPanel extends BaseGUI {
     }
 
     
-    @Override
+    
+   @Override
     protected JPanel createNavPanel() {
         JPanel navPanel = new JPanel();
         navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
         navPanel.add(Box.createVerticalStrut(30));
         
-        navPanel.add(createNavButton("Button 2 to Easy Test", "Easy Panel"));
+        easyPanelButton = createNavButton("Button 2 to Easy Test", "Easy Panel");
+        //easyPanelButton.setActionCommand("Easy Panel");
+        navPanel.add(easyPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
-        navPanel.add(createNavButton("Button 3 to learn phrases", "Learn Panel"));
-        navPanel.add(Box.createVerticalStrut(15));
-
-        navPanel.add(createNavButton("Button 1 to Go back to Main Menu", "Menu Panel"));
         
+        menuPanelButton = createNavButton("Button 1 to Go to Menu", "Menu Panel");
+        //menuPanelButton.setActionCommand("Menu Panel");
+        navPanel.add(menuPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
+        
+        
         
         JLabel counterLabel = createLabel("Score: 0");
         counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -74,8 +78,17 @@ public class LearnPanel extends BaseGUI {
         return navPanel;
 
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+   
+    public void addActionListener(ActionListener listener) {
+        easyPanelButton.addActionListener(listener);
+        menuPanelButton.addActionListener(listener);
     }
+
+    @Override
+    public void onUpdated(Data data) {
+        if (northLabel != null) {
+        northLabel.setText(data.lang ? "Afrikaans" : "Tagalog");
+        }
+    }
+    
 }
