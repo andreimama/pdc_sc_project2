@@ -8,6 +8,6 @@ package languagelearner;
  *
  * @author franc
  */
-public class Score {
-    
+public interface PanelListener {
+    void onUpdated(Data data);
 }

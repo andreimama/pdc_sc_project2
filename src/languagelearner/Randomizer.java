@@ -66,34 +66,18 @@ public class Randomizer {
         return phrase;
     }
 
-    public String[] fourPhrases(boolean lang) {
-        Set<String> phrases = new HashSet<>();
-        while (phrases.size() < 4) {
-            String phrase;
-            if (lang) {
-                phrase = randomPhrase("afrTrans");
-            } else {
-                phrase = randomPhrase("tagTrans");
-            }
-            if (phrase != null) {
-                phrases.add(phrase);
-            }
-        }
-        return phrases.toArray(new String[0]);
-    }
-
-    private int randomIndexof2() {
+    public int randomIndexof2() {
         return rand.nextInt(2);
     }
 
     public String rabndomFact() {
-        int lang = randomIndexof2();
+        int lang = rand.nextInt(2);
         String fact;
         if (lang == 0) {
-            fact = randomPhrase("FUNFACTS", "SOUTHAFRICANFUNFACT");
+            fact = randomPhrase("afrFact");
             return fact;
         } else {
-            fact = randomPhrase("FUNFACTS", "PHILIPPINESFUNFACT");
+            fact = randomPhrase("tagFact");
             return fact;
         }
     }

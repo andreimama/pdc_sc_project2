@@ -6,82 +6,104 @@ package languagelearner;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author mamar
  */
-public class LearnPanel extends BaseGUI {
-    
+public class LearnPanel extends BaseGUI implements PanelListener {
+
+    private JButton easyPanelButton;
+    private JButton menuPanelButton;
+    private JLabel northLabel;
+    private JScrollPane textAreaPane;
+    JScrollPane funFact;
+    private Randomizer rand;
+    private DBManager dbManager;
+    private Model model;
+
     public LearnPanel(MainFrame mainFrame) {
         super(mainFrame);
- 
+
     }
 
     @Override
-    protected JPanel createContentPanel(boolean lang) {// This didn't work
-         JPanel panel = new JPanel(new BorderLayout());
-        
+    protected JPanel createContentPanel(boolean lang) {
+        JPanel panel = new JPanel(new BorderLayout());
+        rand = new Randomizer();
+        dbManager = new DBManager();
+        model = new Model();
+
         JPanel northPanel = new JPanel();
-        JLabel northLabel = new JLabel((lang ? "Afrikaans" : "Tagalog"));// Didnt change
+        northLabel = createLabel("Afrikaans");
         northPanel.add(northLabel, BorderLayout.NORTH);
-         
+
         JPanel centerPanel = new JPanel();
-        JScrollPane textAreaPane = createTextArea("texttexttext\ntextxtextxteteexttexxtexte\ntexxtetextxetxetxetxtxetxetetxtetete");
+        textAreaPane = createTextArea("texttexttext\ntextxtextxteteexttexxtexte\ntexxtetextxetxetxetxtxetxetetxtetete");
         centerPanel.add(textAreaPane, BorderLayout.CENTER);
-        
+
         panel.add(northPanel, BorderLayout.NORTH);
         panel.add(centerPanel, BorderLayout.CENTER);
-       
-        
+
         return panel;
-        
-        
+
     }
 
-    public void refresh(){// this didn't work even when either the menupanel had a lang or when this class had a lang
-        revalidate();
-        repaint();
-        System.out.println("Super lang is: " + super.lang);
-        
-    }
-    
     @Override
     protected JPanel createNavPanel() {
         JPanel navPanel = new JPanel();
         navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
         navPanel.add(Box.createVerticalStrut(30));
-        
-        navPanel.add(createNavButton("Button 2 to Easy Test", "Easy Panel"));
-        navPanel.add(Box.createVerticalStrut(15));
-        navPanel.add(createNavButton("Button 3 to learn phrases", "Learn Panel"));
+
+        easyPanelButton = createNavButton("Button 2 to Easy Test", "Easy Panel");
+        //easyPanelButton.setActionCommand("Easy Panel");
+        navPanel.add(easyPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
 
-        navPanel.add(createNavButton("Button 1 to Go back to Main Menu", "Menu Panel"));
-        
+        menuPanelButton = createNavButton("Button 1 to Go to Menu", "Menu Panel");
+        //menuPanelButton.setActionCommand("Menu Panel");
+        navPanel.add(menuPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
-        
+
         JLabel counterLabel = createLabel("Score: 0");
         counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(counterLabel);
         //counter for score
-        
-        
-        JScrollPane funFact = createTextArea("Fun Fact: ");
+
+        funFact = createTextArea("Fun Fact: ");
         funFact.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(funFact);
         //fun fact will be here, a bit unsure to connect datababse and randomier for this.
         return navPanel;
 
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+    public void addActionListener(ActionListener listener) {
+        easyPanelButton.addActionListener(listener);
+        menuPanelButton.addActionListener(listener);
     }
+
+    @Override
+    public void onUpdated(Data data) {
+        if (northLabel != null) {
+            northLabel.setText(data.lang ? "Afrikaans" : "Tagalog");
+        }
+        if(textAreaPane != null){
+            JTextArea textArea = (JTextArea) textAreaPane.getViewport().getView();
+            textArea.setText(model.getAllFacts(data.lang));
+        }
+        if(funFact != null){
+            JTextArea funfact = (JTextArea) funFact.getViewport().getView();
+            funfact.setText("Fun fact: " + model.randomFact());
+        }
+    }
+
 }

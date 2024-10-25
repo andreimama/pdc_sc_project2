@@ -11,9 +11,8 @@ package languagelearner;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -21,20 +20,22 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author mamar
  */
-public class MenuPanel extends BaseGUI {
+public class MenuPanel extends BaseGUI implements PanelListener {
 
+    private JButton easyPanelButton;
+    private JButton learnPanelButton;
     private JComboBox<String> comboBox;
-    private LearnPanel learn;
+    JScrollPane funFact;
+    Model model;
 
-    public MenuPanel(MainFrame mainFrame, LearnPanel learnPanel) {
+    public MenuPanel(MainFrame mainFrame) {
         super(mainFrame);
-        this.learn = learnPanel;
         // add(new JTextField(20));
         // add(createNavButton("Go to Easy panel", "EasyPanel"));
         // add(createNavButton("GUI2", "MenuPanel"));
@@ -44,6 +45,7 @@ public class MenuPanel extends BaseGUI {
     protected JPanel createContentPanel(boolean lang) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        model = new Model();
 
         //chatgpt was used here, just to position the comboxbox in the right place.
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -61,13 +63,13 @@ public class MenuPanel extends BaseGUI {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        String[] languages = {"Afrikaans", "Tagalog"};
+        String[] languages = {"", "Afrikaans", "Tagalog"};
         comboBox = createComboBox(languages);
         panel.add(comboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(createButton("Apply"), gbc);
+        panel.add(quitButton("Quit Button"), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -80,47 +82,47 @@ public class MenuPanel extends BaseGUI {
     @Override
     protected JPanel createNavPanel() {
         JPanel navPanel = new JPanel();
+        model = new Model();
         navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
         navPanel.add(Box.createVerticalStrut(30));
 
-        navPanel.add(createNavButton("Button 2 to Easy Test", "Easy Panel"));
-        navPanel.add(Box.createVerticalStrut(15));
-        navPanel.add(createNavButton("Button 3 to learn phrases", "Learn Panel"));
+        easyPanelButton = createNavButton("Button 2 to Easy Test", "Easy Panel");
+        navPanel.add(easyPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
 
+        learnPanelButton = createNavButton("Button 3 to learn phrases", "Learn Panel");
+        navPanel.add(learnPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
 
         JLabel counterLabel = createLabel("Score: 0");
         counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(counterLabel);
-        //counter for score
 
-        JScrollPane funFact = createTextArea("Fun Fact: ");
+        String fact = model.randomFact();
+        funFact = createTextArea("Fun Fact: " + fact);
         funFact.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(funFact);
-        //fun fact will be here, a bit unsure to connect datababse and randomier for this.
-        return navPanel;
 
+        return navPanel;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        JButton source = (JButton) e.getSource();
-        if (source.getText().equals("Apply")) {
-            String selectedLanguage = (String) comboBox.getSelectedItem();
-            if ("Afrikaans".equals(selectedLanguage)) {
-                changeSuperLang(true);
-                learn.refresh();
-                System.out.println("Afrikaans is selected");
-            } else if ("Tagalog".equals(selectedLanguage)) {
-                changeSuperLang(false);//////////////////////////////////////////////This doesn't work
-                super.lang = false;/////////////////////////////////////////////////This doesn't work
-                //I've tried just making a boolean lang specifically just for learnpanel and menupanel, those didn't work
-                learn.refresh();
-                System.out.println("Tagalog is selected");
-            }
+    public void onUpdated(Data data) {
+        if (data.lang) {
+            comboBox.setSelectedItem("Afrikaans");
+            System.out.println("afirkaans update");
         } else {
-            System.out.println("Button clicked: " + source.getText());
+            comboBox.setSelectedItem("Tagalog");
+            System.out.println("tagalog update");
         }
+
     }
+
+    public void addActionListener(ActionListener listener) {
+        easyPanelButton.addActionListener(listener);
+        learnPanelButton.addActionListener(listener);
+        comboBox.addActionListener(listener);
+
+    }
+
 }

@@ -17,37 +17,47 @@ public class MainFrame extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private MenuPanel menuPanel;
+    private EasyPanel easyPanel;
+    private Model model;
     private LearnPanel learnPanel;
+    private Controller controller;
     
     
     public MainFrame() {
-        setSize(600,400);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        
         
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         
+        
+        model = new Model();
+        easyPanel = new EasyPanel(this);
+        menuPanel = new MenuPanel(this);
         learnPanel = new LearnPanel(this);
-        mainPanel.add(new MenuPanel(this, learnPanel), "Menu Panel");
-        mainPanel.add(new EasyPanel(this), "Easy Panel");
-        mainPanel.add(new LearnPanel(this), "Learn Panel");
+        
+        
+        mainPanel.add(menuPanel, "Menu Panel");
+        mainPanel.add(easyPanel, "Easy Panel");
+        mainPanel.add(learnPanel, "Learn Panel");
+        
+        
+         controller = new Controller(menuPanel, easyPanel, learnPanel, model);
+       setSize(600,400);
+       setDefaultCloseOperation(EXIT_ON_CLOSE);
+       setLocationRelativeTo(null);
+       setVisible(true);
+        
         
         add(mainPanel,BorderLayout.CENTER);
-        setVisible(true);
         
         
-    }
-    protected void refreshPanel() {
-        revalidate(); 
-        repaint();
+        
     }
     
     public void switchTo(String card) {
         cardLayout.show(mainPanel, card);
-        refreshPanel();
     }
-    
-   
+
     
 }
