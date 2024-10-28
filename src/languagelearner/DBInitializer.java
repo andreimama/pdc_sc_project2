@@ -100,3 +100,4 @@ public class DBInitializer {
         writeFactsToDB(afrFacts, tagFacts);
     }
 }
+

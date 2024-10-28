@@ -20,7 +20,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -31,8 +30,8 @@ public class MenuPanel extends BaseGUI implements PanelListener {
     private JButton easyPanelButton;
     private JButton learnPanelButton;
     private JComboBox<String> comboBox;
-    JScrollPane funFact;
-    Model model;
+    private JScrollPane funFact;
+    private Model model;
 
     public MenuPanel(MainFrame mainFrame) {
         super(mainFrame);
@@ -126,3 +125,4 @@ public class MenuPanel extends BaseGUI implements PanelListener {
     }
 
 }
+

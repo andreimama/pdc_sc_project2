@@ -7,8 +7,6 @@ package languagelearner;
 import java.util.Random;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  *
@@ -19,17 +17,18 @@ public class Randomizer {
     Random rand = new Random();
     DBManager dbManager = new DBManager();
 
-    public int[] randomPlacement() {
-        int[] range = {0, 1, 2, 3};
-
-        for (int i = range.length - 1; i > 0; i--) {
-            int j = rand.nextInt(i + 1);
-            int temp = range[i];
-            range[i] = range[j];
-            range[j] = temp;
-        }
-        return range;
+    public void shuffleArray(String[] array) {
+    if (array.length != 4) {
+        throw new IllegalArgumentException("Array must have exactly 4 elements.");
     }
+
+    for (int i = array.length - 1; i > 0; i--) {
+        int j = rand.nextInt(i + 1);
+        String temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
 
     private int randomPhraseIndex(String tableName) {
         int count = 0;
@@ -101,3 +100,4 @@ public class Randomizer {
         }
     }
 }
+

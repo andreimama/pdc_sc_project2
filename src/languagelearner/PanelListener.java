@@ -11,3 +11,4 @@ package languagelearner;
 public interface PanelListener {
     void onUpdated(Data data);
 }
+

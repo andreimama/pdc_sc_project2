@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package languagelearner;
+
+package com.mycompany.pdc_sc_project2;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +7,7 @@ import javax.swing.JComboBox;
 
 /**
  *
- * @author franc
+ * @author mamar
  */
 public class Controller implements ActionListener {
     private MenuPanel menuPanel;
@@ -79,4 +76,3 @@ public class Controller implements ActionListener {
     }
     
 }
-
