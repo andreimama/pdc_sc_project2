@@ -32,9 +32,12 @@ public class MenuPanel extends BaseGUI implements PanelListener {
     private JComboBox<String> comboBox;
     private JScrollPane funFact;
     private Model model;
+    private JLabel counterLabel;
 
     public MenuPanel(MainFrame mainFrame) {
         super(mainFrame);
+        
+       
         // add(new JTextField(20));
         // add(createNavButton("Go to Easy panel", "EasyPanel"));
         // add(createNavButton("GUI2", "MenuPanel"));
@@ -44,7 +47,6 @@ public class MenuPanel extends BaseGUI implements PanelListener {
     protected JPanel createContentPanel(boolean lang) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        model = new Model();
 
         //chatgpt was used here, just to position the comboxbox in the right place.
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -93,7 +95,7 @@ public class MenuPanel extends BaseGUI implements PanelListener {
         navPanel.add(learnPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
 
-        JLabel counterLabel = createLabel("Score: 0");
+        counterLabel = createLabel("Score: " + EasyPanel.model.getScore());
         counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(counterLabel);
 
@@ -107,16 +109,24 @@ public class MenuPanel extends BaseGUI implements PanelListener {
 
     @Override
     public void onUpdated(Data data) {
-        if (data.lang) {
-            comboBox.setSelectedItem("Afrikaans");
-            System.out.println("afirkaans update");
-            super.lang = true;
+        /* if (data.lang) {
+        comboBox.setSelectedItem("Afrikaans");
+        System.out.println("afirkaans update");
+        super.lang = true;
         } else {
-            comboBox.setSelectedItem("Tagalog");
-            System.out.println("tagalog update");
-            
-        }
+        comboBox.setSelectedItem("Tagalog");
+        System.out.println("tagalog update");
+        
+        }*/
+        
+        updateCounterLabel(EasyPanel.model.getScore());
 
+    }
+    
+    public void updateCounterLabel(int currentScore) {
+        if (counterLabel != null) {
+            counterLabel.setText("Score: " + currentScore);
+        }
     }
 
     public void addActionListener(ActionListener listener) {
