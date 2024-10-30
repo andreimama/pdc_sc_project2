@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
         
         
          controller = new Controller(menuPanel, easyPanel, learnPanel, model);
-       setSize(600,400);
+       setSize(1000,400);
        setDefaultCloseOperation(EXIT_ON_CLOSE);
        setLocationRelativeTo(null);
        setVisible(true);
@@ -58,7 +58,6 @@ public class MainFrame extends JFrame {
     public void switchTo(String card) {
         cardLayout.show(mainPanel, card);
     }
-
     
 }
 
