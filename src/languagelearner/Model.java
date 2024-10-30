@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,15 +21,29 @@ public class Model {
     public Data data = new Data();
     private DBManager dbManager = new DBManager();
     private Randomizer rand = new Randomizer();
-    //LearnPanel learnPanel = new LearnPanel(BaseGUI.mainFrame);
-    //  private List<PanelListener> listeners = new ArrayList<>();
+    private List<PanelListener> listeners = new ArrayList<>();
+    private int score = 0;
 
-    private PanelListener listener;
+    //private PanelListener listener;
 
-    //makes a listener
-    public void setListener(PanelListener listener) {
-        this.listener = listener;
+    public void addListener(PanelListener listener) {
+        listeners.add(listener);
     }
+    //makes a listener
+    
+    public int getScore() {
+        return score;
+    }
+    
+    public void incrementScore() {
+        score++;
+        notifyListener();
+        
+    }
+    
+    /* public void setListener(PanelListener listener) {
+    this.listener = listener;
+    }*/
 
     public void updateLanguageFlag(boolean lang) {
         this.lang = lang;
@@ -115,11 +131,11 @@ public class Model {
 
         // for (PanelListener listener : listeners) {
         //   listener.onUpdated(this.data);
-        if (listener != null) {
+        for (PanelListener listener : listeners)
             listener.onUpdated(this.data);
         }
 
-    }
+    
 
     public boolean checkAnswer(String phrase1, String phrase2, boolean lang) {
         if (lang) {
