@@ -1,5 +1,8 @@
-
-package com.mycompany.pdc_sc_project2;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package languagelearner;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +10,7 @@ import javax.swing.JComboBox;
 
 /**
  *
- * @author mamar
+ * @author franc
  */
 public class Controller implements ActionListener {
     private MenuPanel menuPanel;
@@ -20,10 +23,12 @@ public class Controller implements ActionListener {
         this.easyPanel = easyPanel;
         this.learnPanel = learnPanel;
         this.model = model;
+        
         this.menuPanel.addActionListener(this);
         this.easyPanel.addActionListener(this);
         this.learnPanel.addActionListener(this);
-        this.model.setListener(learnPanel);
+        this.model.addListener(learnPanel);
+        this.model.addListener(easyPanel);
     }
 
     @Override
@@ -72,7 +77,9 @@ public class Controller implements ActionListener {
 
     public void setLanguageFlag(boolean lang) {
         model.updateLanguageFlag(lang);
-        
+
     }
-    
+  
 }
+
+
