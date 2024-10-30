@@ -29,9 +29,11 @@ public class LearnPanel extends BaseGUI implements PanelListener {
     private Randomizer rand;
     private DBManager dbManager;
     private Model model;
+    public static JLabel counterLabel;
 
     public LearnPanel(MainFrame mainFrame) {
         super(mainFrame);
+        
 
     }
 
@@ -41,7 +43,8 @@ public class LearnPanel extends BaseGUI implements PanelListener {
         rand = new Randomizer();
         dbManager = new DBManager();
         model = new Model();
-
+        
+        
         JPanel northPanel = new JPanel();
         northLabel = createLabel("Afrikaans");
         northPanel.add(northLabel, BorderLayout.NORTH);
@@ -72,8 +75,10 @@ public class LearnPanel extends BaseGUI implements PanelListener {
         //menuPanelButton.setActionCommand("Menu Panel");
         navPanel.add(menuPanelButton);
         navPanel.add(Box.createVerticalStrut(15));
-
-        JLabel counterLabel = createLabel("Score: 0");
+        
+        
+        counterLabel = createLabel("Score: " + EasyPanel.model.getScore());
+        
         counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         navPanel.add(counterLabel);
         //counter for score
@@ -90,7 +95,12 @@ public class LearnPanel extends BaseGUI implements PanelListener {
         easyPanelButton.addActionListener(listener);
         menuPanelButton.addActionListener(listener);
     }
-
+    
+    public void updateCounterLabel(int currentScore) {
+        if (counterLabel != null) {
+            counterLabel.setText("Score: " + currentScore);
+        }
+    }
     @Override
     public void onUpdated(Data data) {
         if (northLabel != null) {
@@ -104,6 +114,10 @@ public class LearnPanel extends BaseGUI implements PanelListener {
             JTextArea funfact = (JTextArea) funFact.getViewport().getView();
             funfact.setText("Fun fact: " + model.randomFact());
         }
+        
+        updateCounterLabel(EasyPanel.model.getScore());
+        System.out.println("it reaches the end of learn panel on upDted");
+        System.out.println("score: " + EasyPanel.model.getScore());
     }
 
 }
