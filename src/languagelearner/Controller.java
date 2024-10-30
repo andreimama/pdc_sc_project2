@@ -23,11 +23,12 @@ public class Controller implements ActionListener {
         this.easyPanel = easyPanel;
         this.learnPanel = learnPanel;
         this.model = model;
+        
         this.menuPanel.addActionListener(this);
         this.easyPanel.addActionListener(this);
         this.learnPanel.addActionListener(this);
-        this.model.setListener(learnPanel);
-        
+        this.model.addListener(learnPanel);
+        this.model.addListener(easyPanel);
     }
 
     @Override
@@ -76,8 +77,9 @@ public class Controller implements ActionListener {
 
     public void setLanguageFlag(boolean lang) {
         model.updateLanguageFlag(lang);
-        
+
     }
-    
+  
 }
+
 
