@@ -4,6 +4,7 @@
  */
 package languagelearner;
 
+
 /**
  *
  * @author franc
@@ -21,6 +22,9 @@ public class LanguageLearner {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+
+        
         DBManager dbManager = new DBManager();// To be used later
         DBInitializer DBInit = new DBInitializer();
         Randomizer rand = new Randomizer();
