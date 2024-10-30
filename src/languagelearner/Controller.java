@@ -27,6 +27,7 @@ public class Controller implements ActionListener {
         this.easyPanel.addActionListener(this);
         this.learnPanel.addActionListener(this);
         this.model.setListener(learnPanel);
+        
     }
 
     @Override

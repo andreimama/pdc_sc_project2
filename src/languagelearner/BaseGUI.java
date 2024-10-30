@@ -23,6 +23,7 @@ public abstract class BaseGUI extends JPanel {
 
     public static MainFrame mainFrame;
     protected boolean lang = true;
+    private Data data = new Data();//////////////////////////////////////////////////////////
 
     public BaseGUI(MainFrame mainFrame) {
 
@@ -50,7 +51,7 @@ public abstract class BaseGUI extends JPanel {
 
     // Default createContentPanel method, can be overridden
     protected JPanel createContentPanel() {
-        return createContentPanel(lang); // Default to true or appropriate default value
+        return createContentPanel(data.lang); // Default to true////////////////////////////////////////////////////
     }
 
     // Overloaded method with boolean parameter

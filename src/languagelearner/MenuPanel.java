@@ -110,9 +110,11 @@ public class MenuPanel extends BaseGUI implements PanelListener {
         if (data.lang) {
             comboBox.setSelectedItem("Afrikaans");
             System.out.println("afirkaans update");
+            super.lang = true;
         } else {
             comboBox.setSelectedItem("Tagalog");
             System.out.println("tagalog update");
+            
         }
 
     }
@@ -121,6 +123,13 @@ public class MenuPanel extends BaseGUI implements PanelListener {
         easyPanelButton.addActionListener(listener);
         learnPanelButton.addActionListener(listener);
         comboBox.addActionListener(listener);
+        String option = comboBox.getSelectedItem().toString();
+        if(option == "Afrikaans"){
+            super.lang = true;
+        }else{
+            super.lang = false;
+        }
+        
 
     }
 

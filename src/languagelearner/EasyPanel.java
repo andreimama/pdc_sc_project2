@@ -33,7 +33,7 @@ public class EasyPanel extends BaseGUI implements PanelListener {
     private static JButton button4;
     private static int score = 0;
     private static String phrase;
-    private static boolean lang = true;
+    private static boolean lang;/////////////////////////////////////////////////
     private static JLabel counterLabel;
     private String[] phrases;
 
@@ -48,8 +48,7 @@ public class EasyPanel extends BaseGUI implements PanelListener {
         model = new Model();
         rand = new Randomizer();
         model.updateLanguageFlag(lang);
-        
-        
+
         JPanel northPanel = new JPanel();
         JLabel northLabel = new JLabel((lang ? "Afrikaans" : "Tagalog"));
         northPanel.add(northLabel, BorderLayout.NORTH);
@@ -120,7 +119,7 @@ public class EasyPanel extends BaseGUI implements PanelListener {
     }
 
     protected static void buttonPressed(String buttonName) {
-        if (model.checkAnswer(phrase, buttonName,lang)) {
+        if (model.checkAnswer(phrase, buttonName, lang)) {
             score++;
             counterLabel.setText("Score: " + score);
             phrase = (lang ? rand.randomPhrase("afrPhrase") : rand.randomPhrase("tagPhrase"));
@@ -130,10 +129,25 @@ public class EasyPanel extends BaseGUI implements PanelListener {
             centerLabel.setText(phrase);
         }
 
-        refreshPanel();
+        refreshPanel(lang);
     }
 
     private static void refreshPanel() {
+        String[] newPhrases = model.fourPhrases(phrase, lang);
+
+        // Update button text
+        button1.setText(newPhrases[0]);
+        button2.setText(newPhrases[1]);
+        button3.setText(newPhrases[2]);
+        button4.setText(newPhrases[3]);
+
+        applyButtonAction(button1, newPhrases[0]);
+        applyButtonAction(button2, newPhrases[1]);
+        applyButtonAction(button3, newPhrases[2]);
+        applyButtonAction(button4, newPhrases[3]);
+    }
+
+    private static void refreshPanel(boolean lang) {
         String[] newPhrases = model.fourPhrases(phrase, lang);
 
         // Update button text
@@ -163,7 +177,8 @@ public class EasyPanel extends BaseGUI implements PanelListener {
 
     @Override
     public void onUpdated(Data data) {
-        this.lang = data.lang;
+        lang = data.lang;///////////////////////////////////////////////////////
+        System.out.println("It work");
+        refreshPanel(data.lang);
     }
 }
-

@@ -12,5 +12,5 @@ package languagelearner;
 //this data is just info that the model needs to communicate to all the view panels, you can try connect funFacts and phrases thrugh here.
 public class Data {
 
-    boolean lang = true;//True = Afrikaans, false = Tagalog
+    public boolean lang = true;//True = Afrikaans, false = Tagalog
 }
