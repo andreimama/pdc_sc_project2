@@ -12,16 +12,17 @@ import java.sql.SQLException;
  *
  * @author franc
  */
+//Class to generate random values and phrases from database e.g. Shuffling arrays and retrieved random phrases or facts
 public class Randomizer {
-
+    //Encapsulated fields
     Random rand = new Random();
     DBManager dbManager = new DBManager();
-
+    //Shuffles elements of array
     public void shuffleArray(String[] array) {
     if (array.length != 4) {
         throw new IllegalArgumentException("Array must have exactly 4 elements.");
     }
-
+    //Fisher and Yates method of shuffling (Thank you Franc - Andrei)
     for (int i = array.length - 1; i > 0; i--) {
         int j = rand.nextInt(i + 1);
         String temp = array[i];
@@ -29,7 +30,7 @@ public class Randomizer {
         array[j] = temp;
     }
 }
-
+    //Generates a random index for a phrase from a specific table
     private int randomPhraseIndex(String tableName) {
         int count = 0;
         String countQuery = "SELECT COUNT(*) FROM " + tableName;
@@ -46,7 +47,8 @@ public class Randomizer {
         }
         return rand.nextInt(count);
     }
-
+    
+    //Retrieve Random phrase also uses randomPhraseIndex
     private String randomPhrase(String tableName, String columnName) {
         String phrase = null;
         int index = randomPhraseIndex(tableName);
@@ -64,23 +66,14 @@ public class Randomizer {
         }
         return phrase;
     }
-
+    
+    //Generates random index of 2
     public int randomIndexof2() {
         return rand.nextInt(2);
     }
-
-    public String rabndomFact() {
-        int lang = rand.nextInt(2);
-        String fact;
-        if (lang == 0) {
-            fact = randomPhrase("afrFact");
-            return fact;
-        } else {
-            fact = randomPhrase("tagFact");
-            return fact;
-        }
-    }
-
+    
+    
+    //Retrieves Random Phrase based on option (used by other methods in this class)
     public String randomPhrase(String options) {
         switch (options) {
             case "afrPhrase":
@@ -100,4 +93,3 @@ public class Randomizer {
         }
     }
 }
-
