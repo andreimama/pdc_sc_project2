@@ -6,11 +6,12 @@ package languagelearner;
 
 /**
  *
- * @author franc
+ * @author mamar
  */
-//basically u have all your methods and logic in Model class, Controller class is just there to listen to events through actionPerformed.
-//this data is just info that the model needs to communicate to all the view panels, you can try connect funFacts and phrases thrugh here.
+//All your methods and logic in Model class, Controller class is just there to listen to events through actionPerformed.
+//This data is just info that the model needs to communicate to all the view panels.
 public class Data {
-
-    public boolean lang = true;//True = Afrikaans, false = Tagalog
+    //Field to store language setting
+    boolean lang = true;//True = Afrikaans, false = Tagalog
+    
 }
