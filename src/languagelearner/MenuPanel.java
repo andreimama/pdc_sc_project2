@@ -3,11 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package languagelearner;
-
-/**
- *
- * @author mamar
- */
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,7 +12,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -25,30 +19,29 @@ import javax.swing.JScrollPane;
  *
  * @author mamar
  */
+//Menu Class extends BaseGUI. Is the Main Menu panel that users will choose what language they will want to learn/test on
 public class MenuPanel extends BaseGUI implements PanelListener {
-
+    
+    //GUI COMPONENTS in private fields
     private JButton easyPanelButton;
     private JButton learnPanelButton;
-    private JComboBox<String> comboBox;
+    private JButton adminPanelButton;
+    public JComboBox<String> comboBox;
     private JScrollPane funFact;
     private Model model;
-    private JLabel counterLabel;
 
+    //Constructor
     public MenuPanel(MainFrame mainFrame) {
         super(mainFrame);
-        
-       
-        // add(new JTextField(20));
-        // add(createNavButton("Go to Easy panel", "EasyPanel"));
-        // add(createNavButton("GUI2", "MenuPanel"));
     }
-
+    
+    //Creates its own Contentpanel for menupanel.
     @Override
     protected JPanel createContentPanel(boolean lang) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        //chatgpt was used here, just to position the comboxbox in the right place.
+        //Chatgpt was used here, just to position the comboxbox in the right place.
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 10, 0); // Adds space between components
 
@@ -60,7 +53,7 @@ public class MenuPanel extends BaseGUI implements PanelListener {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weighty = 0; // Reset weighty
-        panel.add(createLabel("Welcome 2 Lang"), gbc);
+        panel.add(createLabel("Welcome to Language Learner ! Please select a language you would like to learn"), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -79,7 +72,8 @@ public class MenuPanel extends BaseGUI implements PanelListener {
 
         return panel;
     }
-
+    
+    //Navigation Panel for MenuPanel class
     @Override
     protected JPanel createNavPanel() {
         JPanel navPanel = new JPanel();
@@ -87,18 +81,19 @@ public class MenuPanel extends BaseGUI implements PanelListener {
         navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
         navPanel.add(Box.createVerticalStrut(30));
 
-        easyPanelButton = createNavButton("Button 2 to Easy Test", "Easy Panel");
-        navPanel.add(easyPanelButton);
+        easyPanelButton = createNavButton("Easy Test", "Easy Panel"); //Nav Button to Easy Panel
+        navPanel.add(easyPanelButton);//Add button to navPanel
         navPanel.add(Box.createVerticalStrut(15));
 
-        learnPanelButton = createNavButton("Button 3 to learn phrases", "Learn Panel");
-        navPanel.add(learnPanelButton);
+        learnPanelButton = createNavButton("Learn phrases", "Learn Panel");//Nav Button to Learn Panel
+        navPanel.add(learnPanelButton);//Add button to navPanel
+        navPanel.add(Box.createVerticalStrut(15));
+        
+        adminPanelButton = createNavButton("Admin Panel", "Admin Panel"); //Nav Button to Admin Panel
+        navPanel.add(adminPanelButton);//Add button to navPanel
         navPanel.add(Box.createVerticalStrut(15));
 
-        counterLabel = createLabel("Score: " + EasyPanel.model.getScore());
-        counterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        navPanel.add(counterLabel);
-
+        //Adds Fun fact, gets random fact from database
         String fact = model.randomFact();
         funFact = createTextArea("Fun Fact: " + fact);
         funFact.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -107,41 +102,23 @@ public class MenuPanel extends BaseGUI implements PanelListener {
         return navPanel;
     }
 
-    @Override
+    @Override //Method intentionally left empty/ No use for updating data on menu panel yet, could be for future purposes.
     public void onUpdated(Data data) {
-        /* if (data.lang) {
-        comboBox.setSelectedItem("Afrikaans");
-        System.out.println("afirkaans update");
-        super.lang = true;
-        } else {
-        comboBox.setSelectedItem("Tagalog");
-        System.out.println("tagalog update");
-        
-        }*/
-        
-        updateCounterLabel(EasyPanel.model.getScore());
-
+    
     }
     
-    public void updateCounterLabel(int currentScore) {
-        if (counterLabel != null) {
-            counterLabel.setText("Score: " + currentScore);
-        }
-    }
-
     public void addActionListener(ActionListener listener) {
         easyPanelButton.addActionListener(listener);
         learnPanelButton.addActionListener(listener);
+        adminPanelButton.addActionListener(listener);
         comboBox.addActionListener(listener);
+        
+        //Updates the language flag based on the combo box selection
         String option = comboBox.getSelectedItem().toString();
-        if(option == "Afrikaans"){
+        if("Afrikaans".equals(option)){
             super.lang = true;
-        }else{
+        } else{
             super.lang = false;
         }
-        
-
     }
-
 }
-
