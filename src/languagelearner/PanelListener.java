@@ -8,7 +8,9 @@ package languagelearner;
  *
  * @author franc
  */
+//Interface for classes to be notified when data is updated
 public interface PanelListener {
     void onUpdated(Data data);
+    
 }
 
