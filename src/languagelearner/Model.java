@@ -15,6 +15,8 @@ import java.util.List;
  *
  * @author franc
  */
+
+//Handles the Data and logic of the application
 public class Model {
 
     public boolean lang; //true = afrikaans, false = tagalog
@@ -22,37 +24,39 @@ public class Model {
     private DBManager dbManager = new DBManager();
     private Randomizer rand = new Randomizer();
     private List<PanelListener> listeners = new ArrayList<>();
-    private int score = 0;
-
-    //private PanelListener listener;
-
+    private int score;
+    public static int menuScore;
+    
+    //Adds listeners
     public void addListener(PanelListener listener) {
         listeners.add(listener);
     }
-    //makes a listener
     
+    //Notifies all listeners that data has been updated.
+    private void notifyListener() {
+        for (PanelListener listener : listeners)
+            listener.onUpdated(this.data);
+        }
+    //Rteurns Score
     public int getScore() {
         return score;
     }
-    
+
+    //Increments Score and updates menuScore
     public void incrementScore() {
         score++;
+        menuScore = score;
         notifyListener();
-        
     }
     
-    /* public void setListener(PanelListener listener) {
-    this.listener = listener;
-    }*/
-
+    //Updates languageFlag (also called in Controller)
     public void updateLanguageFlag(boolean lang) {
         this.lang = lang;
         data.lang = lang;
-        System.out.println("yeah notifylistenr called");
         notifyListener();
     }
-
-    public String getAllFacts(boolean lang) {
+    //Retrives all phrases from database based on language setting
+    public String getAllPhrases(boolean lang) {
         if (lang) {
             String[] phrasesAfr = dbManager.getAllPhrases("AFRIKAANSPHRASES", "PHRASE");
             StringBuilder afrPhrases = new StringBuilder();
@@ -81,17 +85,13 @@ public class Model {
             return tagPhrases.toString();
         }
     }
-
+    //Retrives four phrases with the translation of a phrase.
     public String[] fourPhrases(String afrikaansPhrase, boolean lang) {
         Set<String> phrases = new HashSet<>();
-
-        // Add the English translation if available
         String englishTranslation = englishTranslation(afrikaansPhrase, lang);
         if (englishTranslation != null) {
             phrases.add(englishTranslation);
         }
-
-        // Generate random phrases until we have 4 unique phrases
         while (phrases.size() < 4) {
             String phrase;
             if (lang) {
@@ -99,17 +99,13 @@ public class Model {
             } else {
                 phrase = rand.randomPhrase("tagTrans");
             }
-
-            // Only add unique phrases
             if (phrase != null) {
                 phrases.add(phrase);
             }
         }
-
-        // Convert Set to Array
         return phrases.toArray(new String[0]);
     }
-
+    //Generatse a randomfact
     public String randomFact() {
         int lang = rand.randomIndexof2();
         String fact;
@@ -122,21 +118,7 @@ public class Model {
         }
     }
 
-    public String getCurrentLanguage() {
-        return lang ? "Afrikaans" : "Tagalog";
-    }
-
-    //notifys listener when data is updated
-    private void notifyListener() {
-
-        // for (PanelListener listener : listeners) {
-        //   listener.onUpdated(this.data);
-        for (PanelListener listener : listeners)
-            listener.onUpdated(this.data);
-        }
-
-    
-
+    //Checks if two phrases match, returns true if phrases match false if otherwise.
     public boolean checkAnswer(String phrase1, String phrase2, boolean lang) {
         if (lang) {
             return checkAnswer("AFRIKAANSPHRASES", "PHRASE", "ENGLISHTRANSLATION", phrase1, phrase2);
@@ -144,13 +126,12 @@ public class Model {
             return checkAnswer("TAGALOGPHRASES", "PHRASE", "ENGLISHTRANSLATION", phrase1, phrase2);
         }
     }
-
+    //Does an SQL query to check if two phrases have the same ID
     private boolean checkAnswer(String tableName, String columnName1, String columnName2, String phrase1, String phrase2) {
         String query1 = "SELECT ID FROM " + tableName + " WHERE " + columnName1 + " = '" + phrase1 + "'";
         String query2 = "SELECT ID FROM " + tableName + " WHERE " + columnName2 + " = '" + phrase2 + "'";
         ResultSet rs1 = null;
         ResultSet rs2 = null;
-
         try {
             rs1 = dbManager.getFromDB(query1);
             if (!rs1.next()) {
@@ -184,7 +165,7 @@ public class Model {
 
         return false;
     }
-
+    //Retrieves english translation of a given phrase based on language setting
     public String englishTranslation(String phrase, boolean lang) {
         if (lang) {
             return getTranslation("AFRIKAANSPHRASES", "PHRASE", "ENGLISHTRANSLATION", phrase);
@@ -192,7 +173,7 @@ public class Model {
             return getTranslation("TAGALOGPHRASES", "PHRASE", "ENGLISHTRANSLATION", phrase);
         }
     }
-
+    //Dones SQL Query to retrive a translation from database (used by englishTranslation)
     private String getTranslation(String tableName, String columnName, String translationColumn, String phrase) {
         String query = "SELECT " + translationColumn + " FROM " + tableName + " WHERE " + columnName + " = '" + phrase + "'";
         ResultSet rs = null;
@@ -216,9 +197,4 @@ public class Model {
         }
         return null;
     }
-
-    //once everything works put this in.
-    /*public void quitGame() {
-        
-    }*/
 }
